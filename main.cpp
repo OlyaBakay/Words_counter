@@ -24,13 +24,11 @@ vector<string> file_reading(string filename) {
         fin.close();
     }
     else
-        cerr << "error reading from file";
+        cerr << "Error with opening the file!";
     return words;
 }
 
-
 void calculate(vector<string> my_vect, int start, int end)
-//function for calculating of words in file using threads and mutex for synchronization
 {
     map<string, int> local_counting_words;
     for (; start <= end; ++start) {
@@ -38,9 +36,8 @@ void calculate(vector<string> my_vect, int start, int end)
     }
     lock_guard<mutex> lg(mtx);
 
-    for (map<string, int>::iterator i = local_counting_words.begin(); i != local_counting_words.end(); i++) {
+    for (size_t i = local_counting_words.begin(); i != local_counting_words.end(); ++i) {
         counting_words[i->first] += i->second;
-        cout << "cdwk";
     }
 }
 
@@ -49,36 +46,30 @@ bool diff_func(const pair<string, int> &a, const pair<string, int> &b){
 }
 
 vector<pair<string, int>> toVector(map<string, int> mp) {
-    map<string, int>::iterator map_iter;
     vector<pair<string, int>> words_vector;
-    for (map_iter = mp.begin(); map_iter != mp.end(); map_iter++) {
+    for (size_t map_iter = mp.begin(); map_iter != mp.end(); ++map_iter) {
         words_vector.push_back(make_pair(map_iter-> first, map_iter-> second));
     }
     return words_vector;
 }
 
-
-
 void alph_and_num_order(string f1, string f2){
-    map<string, int>::iterator words_iter;
     ofstream f_in_alph_order;
     ofstream f_in_num_order;
 
     f_in_alph_order.open(f1);
     f_in_num_order.open(f2);
 
-    for (words_iter = counting_words.begin(); words_iter != counting_words.end(); words_iter++) {
-        f_in_alph_order << words_iter->first << "   " << words_iter->second << endl;
+    for (size_t words_iter = counting_words.begin(); words_iter != counting_words.end(); ++words_iter) {
+        f_in_alph_order << words_iter->first << "\t" << words_iter->second << endl;
     }
     f_in_alph_order.close();
-
 
     vector<pair<string, int>> vector_of_pairs = toVector(counting_words);
     sort(vector_of_pairs.begin(), vector_of_pairs.end(), diff_func);
 
-
     for (pair<string, int> item: vector_of_pairs){
-        f_in_num_order << item.first<< "    " << item.second;
+        f_in_num_order << item.first << "\t" << item.second;
     }
     f_in_num_order.close();
 }
@@ -87,14 +78,14 @@ void multi_threading(int num, vector<string> words){
     assert (num>0);
     
     thread num_of_thread[num];
-    long words_per_thread = words.size() / (num-1);
-    long remain = words.size() % (num-1);
+    long words_per_thread = words.size() / (num - 1);
+    long remain = words.size() % (num - 1);
     int move = 0;
-    for (int i=0; i< num; i++){
+    for (int i = 0; i < num; ++i){
         num_of_thread[i] = thread(calculate, words, words_per_thread, remain);
         move += words_per_thread;
     }
-    for (int j=0; j < num; ++j){
+    for (int j = 0; j < num; ++j){
         num_of_thread[j].join();
     }
 }
@@ -134,7 +125,9 @@ T get_param(string key, map<string, string> myMap) {
 }
 
 int main(){
-    string filename = "config.txt";
+    string filename;
+    cout << "Please enter name of configuration file with extension '.txt':>\t";
+    cin >> filename;
     string infile, out_by_a, out_by_n;
     int num_of_threads;
     
