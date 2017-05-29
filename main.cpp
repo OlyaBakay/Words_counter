@@ -74,9 +74,7 @@ void alph_and_num_order(string f1, string f2){
     f_in_num_order.close();
 }
 
-void multi_threading(int num, vector<string> words){
-    assert (num>0);
-    
+void multi_threading(int num, vector<string> words) {
     thread num_of_thread[num];
     long words_per_thread = words.size() / (num - 1);
     long remain = words.size() % (num - 1);
@@ -99,7 +97,7 @@ map<string, string> read_config(string filename) {
 
     if (myfile.is_open())
     {
-        while (getline(myfile,line))
+        while (getline(myfile, line))
         {
             int pos = line.find("=");
             string key = line.substr(0, pos);
