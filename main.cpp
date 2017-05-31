@@ -66,7 +66,7 @@ void alph_num_order(string f1, string f2) {
     f_a.close();
 
     vector<pair<string, int> > vector_of_pairs(all_counted.begin(), all_counted.end());
-    sort(vector_of_pairs.begin(), vector_of_pairs.end(), diff_func);// decreasing_sort<string, int>());
+    sort(vector_of_pairs.begin(), vector_of_pairs.end(), diff_func);
     ofstream f_n;
     f_n.open(f2);
     for (pair<string, int> item: vector_of_pairs){
@@ -83,7 +83,7 @@ T get_param(string key, map<string, string> myMap) {
     ss >> val;
     return val;
 }
-void count_words(vector<string> words, int beg, int fin){   //, map<string, int>& counted) {
+void count_words(vector<string> words, int beg, int fin){
     map<string, int> new_map;
     for (int i = beg; i < fin; ++i) {
         ++new_map[words[i]];
@@ -91,8 +91,6 @@ void count_words(vector<string> words, int beg, int fin){   //, map<string, int>
 
     lock_guard<mutex> lc(mx);
     for (auto el : new_map) all_counted[el.first] += el.second;
-
-//    return new_map;
 };
 
 void check_word(string& word) {
@@ -124,9 +122,9 @@ vector<string> file_reading(string filename) {
 }
 
 int main(){
-    string filename = "config.txt";
-//    cout << "Please enter name of configuration file with extension '.txt':>";
-//    cin >> filename;
+    string filename;
+    cout << "Please enter name of configuration file with extension '.txt':>";
+    cin >> filename;        // config.txt
 
     auto start_time = get_current_time_fenced();
     map<string, string> mp = read_config(filename);
