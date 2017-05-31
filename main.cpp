@@ -16,14 +16,6 @@ using namespace std;
 mutex mx;
 map<string, int> all_counted;
 
-template <typename T1, typename T2>
-struct decreasing_sort {
-    typedef pair<T1, T2> type;
-    bool operator ()(type const& a, type const& b) const {
-        return a.second > b.second;
-    }
-};
-
 map<string, string> read_config(string filename) {
     string line;
     ifstream myfile;
@@ -49,14 +41,6 @@ map<string, string> read_config(string filename) {
 
 bool diff_func(const pair<string, int> &a, const pair<string, int> &b){
     return a.second < b.second;
-}
-
-vector<pair<string, int>> toVector(map<string, int> mp) {
-    vector<pair<string, int>> words_vector;
-    for (auto map_iter = mp.begin(); map_iter != mp.end(); ++map_iter) {
-        words_vector.push_back(make_pair(map_iter-> first, map_iter-> second));
-    }
-    return words_vector;
 }
 
 void alph_num_order(string f1, string f2) {
